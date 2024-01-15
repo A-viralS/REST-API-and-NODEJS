@@ -1,0 +1,12 @@
+REST API -JSON
+GET/users - List all users 
+GET/users/1- Get the user with ID 1 
+
+POST /api/users/ - create a new user as json for phone or other client devices 
+
+PATCH /api/users/1 - Edit user with id 1 
+
+DELETE /api/users/1 - delete user with id 1 
+
+GET /api/users/:id 
+:id means that id is variable 
