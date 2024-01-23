@@ -1,19 +1,29 @@
-// models/url.js
+const mongoose = require("mongoose");
 
-const mongoose = require('mongoose');
-
-const URLSchema = new mongoose.Schema({
+const urlSchema = new mongoose.Schema(
+  {
     shortId: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     redirectURL: {
-        type: String,  // Make sure 'redirectURL' is defined properly
-        required: true,
+      type: String,
+      required: true,
     },
-    visitHistory: [{ timestamp: { type: Number } }],
-}, { timestamps: true });
+    visitHistory: [
+        { timestamp: { type: Number } }
 
-const URL = mongoose.model('url', URLSchema);
+    ],
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+     
+    },
+  },
+  { timestamps: true }
+);
+
+const URL = mongoose.model("urlWRef", urlSchema);
+
 module.exports = URL;
