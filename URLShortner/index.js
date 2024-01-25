@@ -3,7 +3,7 @@ const { connectToMongoDB } = require("./connection");
 const urlRoute = require("./routes/url");
 const staticRoute=require('./routes/staticRouter')
 const userRoute=require('./routes/user')
-const {restrictToLoggedinUserOnly,checkAuth}= require('./middlewares/auth')
+const {checkForAuthentication,restrictTo}= require('./middlewares/auth')
 const URL = require("./models/url");
 const cookieParser= require('cookie-parser')
 const app = express();
@@ -12,14 +12,14 @@ const path= require('path')
 
 app.use(express.json());// used when we put raw data from the postman 
 app.use(express.urlencoded({extended:false}))//json and form data
-
-app.use("/url", restrictToLoggedinUserOnly, urlRoute);
+app.use(checkForAuthentication); //like this seperately because this will be checked no matter what 
+app.use("/url", restrictTo(['NORMAL','ADMIN']), urlRoute);
 app.use("/user", userRoute);
-app.use("/", checkAuth, staticRoute);
+app.use("/", staticRoute);
 app.get("/url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
   const entry = await URL.findOneAndUpdate(
-    {
+    { 
       shortId,
     },
     {
